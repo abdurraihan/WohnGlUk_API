@@ -1,3 +1,4 @@
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
@@ -6,17 +7,17 @@ import mongoose from "mongoose";
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 
+const PORT = process.env.PORT || 3000;
+
+const app = express();
+app.use(express.json());
 dotenv.config();
+app.use(cors());
 
 mongoose
   .connect(process.env.MONGO_DB_CONNECTION_STRING)
   .then(() => console.log("MongoDB Connected!"))
   .catch((err) => console.error("MongoDB Connection Error:", err));
-
-const app = express();
-const PORT = process.env.PORT || 4000;
-
-app.use(express.json());
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
