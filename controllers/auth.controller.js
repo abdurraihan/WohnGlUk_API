@@ -1,12 +1,12 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-import { errorhandler } from "../utils/error.js";
+import { errorHandler } from "../utils/error.js";
 
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashedPassword = await bcryptjs.hash(password, 10);
-  console.log("hit");
+
   const newUser = new User({ username, email, password: hashedPassword });
   console.log("hiting signUp route");
   try {
@@ -19,16 +19,17 @@ export const signup = async (req, res, next) => {
 
 export const sinin = async (req, res, next) => {
   const { email, password } = req.body;
+  console.log("signup hitting ");
 
   try {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return next(errorhandler(404, "user not fount try with valid email"));
+      return next(errorHandler(404, "user not fount try with valid email"));
     }
     const isValid = await bcryptjs.compare(password, user.password);
     if (!isValid) {
-      return next(errorhandler(404, "wrond password Try again"));
+      return next(errorHandler(404, "wrond password Try again"));
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     const { password: pass, ...rest } = user._doc;

@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
@@ -13,6 +14,7 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 app.use(cors());
+app.use(cookieParser());
 
 mongoose
   .connect(process.env.MONGO_DB_CONNECTION_STRING)
