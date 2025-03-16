@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 // import Routers
 import authRouter from "./routes/auth.route.js";
+import listingRouter from "./routes/listing.route.js";
 import userRouter from "./routes/user.route.js";
 
 const PORT = process.env.PORT || 3000;
@@ -28,6 +29,7 @@ app.listen(PORT, () => {
 //use routers
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter);
 
 // Global Error handler
 app.use((err, req, res, next) => {
