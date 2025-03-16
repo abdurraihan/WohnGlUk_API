@@ -17,7 +17,7 @@ export const signup = async (req, res, next) => {
   }
 };
 
-export const sinin = async (req, res, next) => {
+export const signin = async (req, res, next) => {
   const { email, password } = req.body;
   console.log("signup hitting ");
 
@@ -74,6 +74,15 @@ export const google = async (req, res, next) => {
         .status(200)
         .json(rest);
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const signout = async (req, res, next) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json("user has been logged out");
   } catch (error) {
     next(error);
   }
