@@ -14,7 +14,14 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 dotenv.config();
-app.use(cors());
+
+// Configure CORS options
+const corsOptions = {
+  origin: "https://wohngluck-deploy.onrender.com", // Your frontend's Render URL
+  credentials: true, // Allow cookies and authorization headers
+};
+
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 mongoose
