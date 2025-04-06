@@ -40,7 +40,6 @@ export const signin = async (req, res, next) => {
         secure: process.env.NODE_ENV === "production", // Only set secure in production
         sameSite: "Lax", // Or 'None' if needed and secure is true
         expires: expiryDate,
-        path: "/",
       })
       .status(200)
       .json(rest);
@@ -65,7 +64,6 @@ export const google = async (req, res, next) => {
           secure: process.env.NODE_ENV === "production", // Only set secure in production
           sameSite: "Lax", // Or 'None' if needed and secure is true
           expires: expiryDate,
-          path: "/",
         })
         .status(200)
         .json(rest);
@@ -90,7 +88,6 @@ export const google = async (req, res, next) => {
           secure: process.env.NODE_ENV === "production", // Only set secure in production
           sameSite: "Lax", // Or 'None' if needed and secure is true
           expires: expiryDate,
-          path: "/",
         })
         .status(200)
         .json(rest);
@@ -102,7 +99,7 @@ export const google = async (req, res, next) => {
 
 export const signout = async (req, res, next) => {
   try {
-    res.clearCookie("access_token", { path: "/" }); // Specify the path when clearing
+    res.clearCookie("access_token");
     res.status(200).json("user has been logged out");
   } catch (error) {
     next(error);
