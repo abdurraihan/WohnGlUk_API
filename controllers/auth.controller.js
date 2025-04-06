@@ -33,8 +33,15 @@ export const signin = async (req, res, next) => {
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     const { password: pass, ...rest } = user._doc;
+    const expiryDate = new Date(Date.now() + 3600000); // 1 hour expiry
     res
-      .cookie("access_token", token, { httpOnly: true })
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Only set secure in production
+        sameSite: "Lax", // Or 'None' if needed and secure is true
+        expires: expiryDate,
+        path: "/",
+      })
       .status(200)
       .json(rest);
   } catch (error) {
@@ -47,11 +54,19 @@ export const google = async (req, res, next) => {
   const { name, email, photo } = req.body;
   try {
     const user = await User.findOne({ email });
+    const expiryDate = new Date(Date.now() + 3600000); // 1 hour expiry
+
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: pass, ...rest } = user._doc;
       res
-        .cookie("access_token", token, { httpOnly: true })
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production", // Only set secure in production
+          sameSite: "Lax", // Or 'None' if needed and secure is true
+          expires: expiryDate,
+          path: "/",
+        })
         .status(200)
         .json(rest);
     } else {
@@ -70,7 +85,13 @@ export const google = async (req, res, next) => {
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
       const { password: pass, ...rest } = newUser._doc;
       res
-        .cookie("access_token", token, { httpOnly: true })
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production", // Only set secure in production
+          sameSite: "Lax", // Or 'None' if needed and secure is true
+          expires: expiryDate,
+          path: "/",
+        })
         .status(200)
         .json(rest);
     }
@@ -81,7 +102,7 @@ export const google = async (req, res, next) => {
 
 export const signout = async (req, res, next) => {
   try {
-    res.clearCookie("access_token");
+    res.clearCookie("access_token", { path: "/" }); // Specify the path when clearing
     res.status(200).json("user has been logged out");
   } catch (error) {
     next(error);
