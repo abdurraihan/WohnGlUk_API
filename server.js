@@ -17,8 +17,8 @@ dotenv.config();
 
 // Configure CORS options
 const corsOptions = {
-  origin: "https://wohngluck-deploy.onrender.com", // Your frontend's Render URL
-  credentials: true, // Allow cookies and authorization headers
+  origin: ["https://wohngluck-deploy.onrender.com", "http://localhost:5173"],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
